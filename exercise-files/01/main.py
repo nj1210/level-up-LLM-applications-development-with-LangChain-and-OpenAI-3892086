@@ -1,13 +1,22 @@
 from dotenv import load_dotenv
+from langchain.prompts import PromptTemplate, ChatPromptTemplate
+from langchain.output_parsers import StrOutputParser
 from langchain_openai import OpenAI
 from colorama import Fore
 
 load_dotenv()
+llm = OpenAI()
+
+prompt_template = ChatPromptTemplate.from_template(
+    "Tell me a short joke about {topic}"
+)
+output_parser = StrOutputParser()
 
 
 def generate(text):
     """ generate text based on the input """
-    pass
+    chain = prompt_template | llm | output_parser
+    return chain.invoke({"topic": text})
 
 
 def start():
